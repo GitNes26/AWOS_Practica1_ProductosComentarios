@@ -36,4 +36,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function comments(){
+        return $this->hasMany('App\Comment');
+        // la tabla users(User) tiene una relacion MUCHOS A MUCHOS la tabla comment(Comment)
+    }
 }
