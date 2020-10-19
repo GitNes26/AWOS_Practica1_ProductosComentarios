@@ -50,6 +50,33 @@ class CommentController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  \App\Comment  $comment
+     * @return \Illuminate\Http\Response
+     */
+    public function CommentsByUser($id_user)
+    {
+        $commentUser = Comment::all()->where('user_id','=',$id_user);
+        return response()->json(["Comentarios registrados por el usuario".$id_user=>$commentUser]);
+        // $comentario= new Comment;
+        // if($id_user)
+        //     return response()->json(["Comentarios Registrados"=>Comment::all($comentario->id_user, $id_user)],200);
+        // return response()->json(["Todos los Comentarios Registrados"=>Comment::all()],200);
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Comment  $comment
+     * @return \Illuminate\Http\Response
+     */
+    public function CommentsByProduct($id_product)
+    {
+        $commentProduct = Comment::all()->where('product_id','=',$id_product);
+        return response()->json(["Comentarios registrados por el producto".$id_product=>$commentProduct]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Comment  $comment
