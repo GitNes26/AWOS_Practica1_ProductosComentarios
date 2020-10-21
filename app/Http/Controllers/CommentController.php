@@ -14,7 +14,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(["Mostrar todos los Comentarios: "=>Comment::all()],200);
     }
 
     /**
@@ -22,9 +22,16 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $Comentario = new Comment;
+        $Comentario->comment = $request->comment;
+        $Comentario->user_id = $request->user_id;
+        $Comentario->product_id = $request->product_id;
+
+        if($Comentario->save())
+            return response()->json(["Comentario Registrado satisfactoriamente:"=>$Comentario],201);
+        return response()->return(null,400);
     }
 
     /**
@@ -55,11 +62,17 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function CommentsByUser($id_user)
+    public function CommentsByUser($id=null)
     {
-        $commentUser = Comment::all()->where('user_id','=',$id_user);
-        return response()->json(["Comentarios registrados por el usuario".$id_user=>$commentUser]);
+        if($id)
+            return response()->json(["Comentarios Registrados por el usuario ".$id=>Comment::find($id)],200);
+        return response()->json(["Todos los Comentarios Registrados"=>Comment::all()],200);
+
+        // $commentUser = Comment::all()->where('user_id','=',$id);
+        // return response()->json(["Comentarios registrados por el usuario ".$id=>$commentUser],200);
+        // return $commentUser;
         // $comentario= new Comment;
+
         // if($id_user)
         //     return response()->json(["Comentarios Registrados"=>Comment::all($comentario->id_user, $id_user)],200);
         // return response()->json(["Todos los Comentarios Registrados"=>Comment::all()],200);
@@ -70,10 +83,10 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function CommentsByProduct($id_product)
+    public function CommentsByProduct($id=null)
     {
-        $commentProduct = Comment::all()->where('product_id','=',$id_product);
-        return response()->json(["Comentarios registrados por el producto".$id_product=>$commentProduct]);
+        $commentProduct = Comment::all()->where('product_id','=',$id);
+        return response()->json(["Comentarios registrados por el producto ".$id=>$commentProduct],200);
     }
 
     /**

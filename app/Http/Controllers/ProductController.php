@@ -30,8 +30,8 @@ class ProductController extends Controller
         $Producto->quantity = $request->quantity;
 
         if($Producto->save())
-            return response()->json(["Producto creado satisfactoriamente:"=>$Producto,201]);
-        return response()->json("El Producto, no fue creado correctamente.",400);
+            return response()->json(["Producto creado satisfactoriamente:"=>$Producto],201);
+        return response()->json(null,400);
     }
 
     /**

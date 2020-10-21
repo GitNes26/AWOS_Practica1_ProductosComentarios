@@ -20,10 +20,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('products/index','ProductController@index');
 
-Route::get('commentsByProduct/{id_product?}','CommentController@CommentsByProduct')
-->where(['id_prodcut','[0-9]+']);
+Route::get('comments/ByUser/{id?}','CommentController@CommentsByUser')
+->where(['id','[0-9]+']);
 
-Route::get('commentsByUser/{id_user}','CommentController@CommentsByUser')
+Route::get('comments/ByProduct/{id?}','CommentController@CommentsByProduct')
 ->where(['id','[0-9]+']);
 
 Route::post('products/create','ProductController@create');
+Route::post('comments/create','CommentController@create');
+
+
+Route::put('products/update','ProductController@update');
+
+Route::delete('products/delete','ProductController@delete');
+
+
+
+// RUTA EJEMPLO Middleware
+Route::get('middleware', 'ProductController@aplicacion')->middleware('verificar.rol');
+// Route::get('middleware/{usuario?}', 'ProductController@aplicacion');
