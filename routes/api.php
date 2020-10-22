@@ -18,7 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('products/index','ProductController@index');
+Route::get('products/index/{id?}','ProductController@index'); // falta hacer funcion
+Route::get('comments/index/{id?}','CommentController@index'); // falta hacer funcion
 
 Route::get('comments/ByUser/{id?}','CommentController@CommentsByUser')
 ->where(['id','[0-9]+']);
@@ -30,9 +31,13 @@ Route::post('products/create','ProductController@create');
 Route::post('comments/create','CommentController@create');
 
 
-Route::put('products/update','ProductController@update');
+Route::put('products/update/{id}','ProductController@update')
+->where(['id','[0-9]+']);
 
-Route::delete('products/delete','ProductController@delete');
+Route::delete('products/delete/{id}','ProductController@destroy')
+->where(['id','[0-9]+']);
+Route::delete('comments/delete/{id}','CommentController@destroy')
+->where(['id','[0-9]+']);
 
 
 

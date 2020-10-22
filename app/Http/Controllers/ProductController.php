@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -12,8 +13,11 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id=null)
     {
+        $product = Product::all()->where('id',$id);
+        if($id)
+            return response()->json(["Producto: ".$id=>$product],200);
         return response()->json(["Todos los Producros",Product::all(),200]);
         // return Product::all();
     }
@@ -74,9 +78,15 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id, Product $product)
     {
-        //
+        $product = Product::find($id);
+        $product->product_name = $request->get("product_name");
+        $product->quantity = $request->get("quantity");
+
+        $product->save();
+        return response()->json(["Producto actualizado:"=>$product],200);
+        return response()->json(null,400);
     }
 
     /**
@@ -85,8 +95,11 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product, $id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+        
+        return response()->json(["Producto ".$id." Eliminado"=>Product::all()],200);
     }
 }

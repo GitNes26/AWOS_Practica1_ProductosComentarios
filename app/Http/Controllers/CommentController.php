@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Comment;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,12 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id=null)
     {
-        return response()->json(["Mostrar todos los Comentarios: "=>Comment::all()],200);
+        $comment = Comment::all()->where('id',$id);
+        if($id)
+            return response()->json(["Comentario: ".$id=>$comment],200);
+        return response()->json(["Mostrar todos los Comentarios:",Comment::all(),200]);
     }
 
     /**
@@ -64,8 +68,9 @@ class CommentController extends Controller
      */
     public function CommentsByUser($id=null)
     {
+        $commentUser = Comment::all()->where('user_id',$id);
         if($id)
-            return response()->json(["Comentarios Registrados por el usuario ".$id=>Comment::find($id)],200);
+            return response()->json(["Comentarios Registrados por el usuario ".$id=>$commentUser],200);
         return response()->json(["Todos los Comentarios Registrados"=>Comment::all()],200);
 
         // $commentUser = Comment::all()->where('user_id','=',$id);
@@ -85,8 +90,10 @@ class CommentController extends Controller
      */
     public function CommentsByProduct($id=null)
     {
-        $commentProduct = Comment::all()->where('product_id','=',$id);
-        return response()->json(["Comentarios registrados por el producto ".$id=>$commentProduct],200);
+        $commentProduct = Comment::all()->where('product_id',$id);
+        if($id)
+            return response()->json(["Comentarios registrados por el producto ".$id=>$commentProduct],200);
+        return response()->json(["Todos los comentarios:"=>Comment::all()],200);
     }
 
     /**
@@ -118,8 +125,11 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment, $id)
     {
-        //
+        $comment = Comment::find($id);
+        $comment->delete();
+
+        return response()->json(["El comentario ".$id." fue elimiando"=>Comment::all()],200);
     }
 }
