@@ -73,14 +73,15 @@ class CommentController extends Controller
             return response()->json(["Comentarios Registrados por el usuario ".$id=>$commentUser],200);
         return response()->json(["Todos los Comentarios Registrados"=>Comment::all()],200);
 
-        // $commentUser = Comment::all()->where('user_id','=',$id);
-        // return response()->json(["Comentarios registrados por el usuario ".$id=>$commentUser],200);
-        // return $commentUser;
-        // $comentario= new Comment;
+        //PRUEBAS
+            // $commentUser = Comment::all()->where('user_id','=',$id);
+            // return response()->json(["Comentarios registrados por el usuario ".$id=>$commentUser],200);
+            // return $commentUser;
+            // $comentario= new Comment;
 
-        // if($id_user)
-        //     return response()->json(["Comentarios Registrados"=>Comment::all($comentario->id_user, $id_user)],200);
-        // return response()->json(["Todos los Comentarios Registrados"=>Comment::all()],200);
+            // if($id_user)
+            //     return response()->json(["Comentarios Registrados"=>Comment::all($comentario->id_user, $id_user)],200);
+            // return response()->json(["Todos los Comentarios Registrados"=>Comment::all()],200);
     }
     /**
      * Display the specified resource.
@@ -114,9 +115,16 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, Comment $comment, $id)
     {
-        //
+        $comment = Comment::find($id);
+        $comment->comment = $request->get("comment");
+        $comment->user_id =  $request->get("user_id");
+        $comment->product_id = $request->get("product_id");
+
+        if($comment->save())
+            return response()->json(["Comentario ".$id." Modificado exitosamente."=>$comment],200);
+        return response()->jason(null,400);
     }
 
     /**

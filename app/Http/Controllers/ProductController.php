@@ -84,8 +84,8 @@ class ProductController extends Controller
         $product->product_name = $request->get("product_name");
         $product->quantity = $request->get("quantity");
 
-        $product->save();
-        return response()->json(["Producto actualizado:"=>$product],200);
+        if($product->save())
+            return response()->json(["Producto actualizado:"=>$product],200);
         return response()->json(null,400);
     }
 
