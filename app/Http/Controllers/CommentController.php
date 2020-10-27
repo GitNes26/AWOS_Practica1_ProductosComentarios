@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Comment;
+use App\Comment,Product,User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class CommentController extends Controller
 {
@@ -15,10 +17,14 @@ class CommentController extends Controller
      */
     public function index($id=null)
     {
-        $comment = Comment::all()->where('id',$id);
+        // $comment = Comment::select('id','comment','user_id','product_id')->where(['id'=> $id])->get();
+        $comments = Comment::select('id','comment','user_id','product_id')->get();
+
+        $comment = DB::table('comments')->select('comment','name')->get();
+        // $comment = DB::select('SELECT comments.id, comments.comment, users.name, prodcuts.product_name FROM comments INNER JOIN users ON comments.user_id=users.id INNER JOIN products ON comments.product_id=products.id')->where('id'.$id)->get();
         if($id)
             return response()->json(["Comentario: ".$id=>$comment],200);
-        return response()->json(["Mostrar todos los Comentarios:",Comment::all(),200]);
+        return response()->json(["Mostrar todos los Comentarios:"=>$comment],200);
     }
 
     /**

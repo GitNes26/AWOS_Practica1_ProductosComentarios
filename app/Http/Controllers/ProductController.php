@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class ProductController extends Controller
 {
@@ -15,10 +17,12 @@ class ProductController extends Controller
      */
     public function index($id=null)
     {
-        $product = Product::all()->where('id',$id);
+        $product = Product::select('id','product_name','quantity')->where(['id'=>$id])->get();
+        $products = Product::select('id','product_name','quantity')->get();
+
         if($id)
             return response()->json(["Producto: ".$id=>$product],200);
-        return response()->json(["Todos los Producros",Product::all(),200]);
+        return response()->json(["Todos los Producros"=>$products],200);
         // return Product::all();
     }
 

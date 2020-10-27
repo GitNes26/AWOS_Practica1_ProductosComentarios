@@ -39,6 +39,6 @@ class User extends Authenticatable
 
     public function comments(){
         return $this->hasMany('App\Comment');
-        // la tabla users(User) tiene una relacion MUCHOS A MUCHOS la tabla comment(Comment)
+        // la tabla users(User) tiene una relacion MUCHOS A MUCHOS con la tabla comment(Comment)
     }
 }
