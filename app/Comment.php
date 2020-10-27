@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $table = 'comments'; //confirmar que este modelo pertenece a la tal tabla
+    protected $table = 'comments'; //confirmar que este modelo pertenece a tal tabla
 
     public function products(){
         return$this->belongsTo('App\Product');

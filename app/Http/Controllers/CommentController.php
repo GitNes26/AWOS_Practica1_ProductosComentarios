@@ -18,13 +18,13 @@ class CommentController extends Controller
     public function index($id=null)
     {
         // $comment = Comment::select('id','comment','user_id','product_id')->where(['id'=> $id])->get();
-        $comments = Comment::select('id','comment','user_id','product_id')->get();
+        $comment = DB::table('comments')->join('products','comments.product_id','products.id')->join('users','comments.user_id','users.id')->select('users.name','products.product_name','comments.comment')->where('comments.id',$id)->get();
 
-        $comment = DB::table('comments')->select('comment','name')->get();
+        $comments = DB::table('comments')->join('products','comments.product_id','products.id')->join('users','comments.user_id','users.id')->select('name','product_name','comment')->get();
         // $comment = DB::select('SELECT comments.id, comments.comment, users.name, prodcuts.product_name FROM comments INNER JOIN users ON comments.user_id=users.id INNER JOIN products ON comments.product_id=products.id')->where('id'.$id)->get();
         if($id)
             return response()->json(["Comentario: ".$id=>$comment],200);
-        return response()->json(["Mostrar todos los Comentarios:"=>$comment],200);
+        return response()->json(["Mostrar todos los Comentarios:"=>$comments],200);
     }
 
     /**
